@@ -2,10 +2,10 @@
   "name": "pokedex",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://gitbozydar.github.io/pokedex/",
+  "homepage": "https://gitbozydar.github.io/pokedex",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"vite\" \"json-server --watch db.json --port 3001\"",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "build": "vite build",

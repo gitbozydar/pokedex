@@ -5,7 +5,7 @@
   "homepage": "https://gitbozydar.github.io/pokedex/",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"json-server --watch db.json --port 3001\"",
+    "dev": "vite",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "build": "vite build",

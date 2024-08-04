@@ -6,7 +6,7 @@ const Favourites = () => {
   const { favouritePokemons, loading } = useFavourite();
 
   return (
-    <Box className="flex flex-wrap justify-center g-2 mt-8">
+    <Box className="flex flex-wrap w-full justify-center g-2 mt-8 bg-light-background dark:bg-dark-background">
       {loading ? (
         <CircularProgress />
       ) : (
@@ -16,7 +16,7 @@ const Favourites = () => {
               <PokemonCard
                 key={id}
                 id={id}
-                img={sprites.other.dream_world.front_default}
+                img={sprites && sprites.other.dream_world.front_default}
                 {...rest}
               />
             ))

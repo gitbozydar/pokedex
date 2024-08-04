@@ -1,7 +1,18 @@
-import { Avatar, Box, Button, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Tooltip,
+  Typography,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
 import { NavLink } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
+import MenuIcon from "@mui/icons-material/Menu";
 
 import Logo from "../../icons/Logo";
 import { AuthContext } from "../../context/AuthContext";
@@ -28,6 +39,18 @@ const Navigation = () => {
     );
   };
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const toggleDrawer = (open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setDrawerOpen(open);
+  };
+
   const routes = [
     { name: "Ranking", id: 1, path: "ranking" },
     { name: "Favourites", id: 2, path: "favourites" },
@@ -35,12 +58,39 @@ const Navigation = () => {
     { name: "Edit", id: 4, path: "edit" },
   ];
 
+  const drawerList = (
+    <Box
+      className="w-40 h-full bg-dark-background text-dark-primary"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List className="w-40 h-full bg-dark-background text-dark-primary">
+        {isLoggedIn ? (
+          routes.map(({ name, id, path }) => (
+            <ListItem key={id} component={NavLink} to={`/${path}`}>
+              <ListItemText primary={name} />
+            </ListItem>
+          ))
+        ) : (
+          <>
+            <ListItem className="" component={NavLink} to="/login">
+              <ListItemText primary="Login" />
+            </ListItem>
+            <ListItem component={NavLink} to="/register">
+              <ListItemText primary="Register" />
+            </ListItem>
+          </>
+        )}
+      </List>
+    </Box>
+  );
+
   return (
     <Box className="dark:bg-dark-nav sticky w-full flex h-24 mb-8 p-4 shadow-md bg-light-nav">
       <NavLink className="flex" to={"/"}>
         <Logo />
       </NavLink>
-      <Box display="flex">
+      <Box sx={{ display: { xs: "none", md: "flex" } }}>
         {isLoggedIn ? (
           <>
             {routes.map(({ name, id, path }) => (
@@ -69,25 +119,45 @@ const Navigation = () => {
           </>
         )}
       </Box>
-      <Box className="flex w-full justify-end items-center gap-4">
+      <Box className="flex w-full justify-end items-center gap-8">
         {isLoggedIn && (
           <>
-            <Box className="flex gap-4">
+            <Box className="flex gap-6 justify-center items-center">
               <Box className="flex flex-col items-center gap-2">
-                <Avatar>{user.username.slice(0, 1)}</Avatar>
+                <Avatar
+                  sx={{ bgcolor: "transparent" }}
+                  className="text-light-primary dark:text-dark-primary border-2"
+                >
+                  {user.username.slice(0, 1)}
+                </Avatar>
                 <Typography className="dark:text-dark-primary text-light-primary">
                   {user.username}
                 </Typography>
               </Box>
-              <Button onClick={handleLogOut}>
+              <Tooltip
+                sx={{ fontSize: "1.8rem", alignItems: "center" }}
+                className="flex flex-col gap-2 hover:cursor-pointer "
+                onClick={handleLogOut}
+                title="Log out"
+              >
                 <LogoutIcon className="dark:text-dark-primary" />
-              </Button>
+              </Tooltip>
             </Box>
           </>
         )}
         <MaterialUISwitch checked={isDarkMode} onChange={handleToggle} />
+        <IconButton
+          sx={{ display: { xs: "flex", md: "none" } }}
+          onClick={toggleDrawer(true)}
+        >
+          <MenuIcon className="dark:text-dark-primary text-light-primary" />
+        </IconButton>
+        <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+          {drawerList}
+        </Drawer>
       </Box>
     </Box>
   );
 };
+
 export default Navigation;

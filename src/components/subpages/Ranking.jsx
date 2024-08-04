@@ -13,11 +13,10 @@ import {
 
 import useFetch from "../hooks/useFetch";
 import { POKE_URL, BASE_URL } from "../shared/apiConfig";
-import CustomPagination from "../shared/CustomPagination/CustomPagination";
 import { AuthContext } from "../context/AuthContext";
 
 const Ranking = () => {
-  const [url, setUrl] = useState(`${POKE_URL}/pokemon?limit=100`);
+  const [url, setUrl] = useState(`${POKE_URL}/pokemon?limit=10000`);
   const { user } = useContext(AuthContext);
 
   const { data, isLoading, pageInfo } = useFetch(
@@ -58,16 +57,15 @@ const Ranking = () => {
     : [];
 
   return (
-    <Box className="max-w-4xl mx-auto my-8 p-4 bg-light-card dark:bg-dark-background border border-light-border dark:border-dark-border rounded-lg shadow-md overflow-auto">
-      <Box className="flex justify-between items-center mb-4">
+    <Box className="w-full max-w-4xl mx-auto my-8 p-4 bg-light-card dark:bg-dark-background border border-light-border dark:border-dark-border rounded-lg shadow-md overflow-auto">
+      <Box className="flex flex-col md:flex-row justify-between items-center mb-4">
         <Button
-          className="w-full dark:bg-dark-button "
+          className="w-full md:w-auto dark:bg-dark-button mb-2 md:mb-0"
           variant="contained"
           onClick={() => setOrderBy("")}
         >
           Clear Filters
         </Button>
-        <CustomPagination {...pageInfo} onPageChange={handlePageChange} />
       </Box>
       {isLoading ? (
         <Box className="flex justify-center items-center h-64">

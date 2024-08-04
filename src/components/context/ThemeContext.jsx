@@ -11,7 +11,7 @@ const ThemeProvider = ({ children }) => {
 
   return (
     <ThemeContext.Provider value={{ isDarkMode, handleToggle }}>
-      <div className={`${isDarkMode ? "dark" : ""} w-full h-full`}>
+      <div className={`${isDarkMode ? "dark" : ""}  w-full h-full`}>
         {children}
       </div>
     </ThemeContext.Provider>

@@ -15,7 +15,10 @@ import { NavLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import useFavourite from "../../hooks/useFavourite";
+import Swords from "../../../assets/cross-swords.png";
+
 import { AuthContext } from "../../context/AuthContext";
+
 import useUpdate from "../../hooks/useUpdate";
 
 const PokemonCard = ({
@@ -37,7 +40,7 @@ const PokemonCard = ({
   const [favourite, setFavourite] = useState(false);
   const [editing, setEditing] = useState(false);
   const { toggleFavourite } = useFavourite();
-  const { user } = useContext(AuthContext);
+  const { user, isLoggedIn } = useContext(AuthContext);
   const { updatePokemon, loading, error } = useUpdate();
 
   const { register, handleSubmit } = useForm({
@@ -49,13 +52,21 @@ const PokemonCard = ({
   });
 
   useEffect(() => {
-    if (user.favourites.includes(id)) {
+    if (user && user.favourites.some((pokemon) => pokemon.id === id)) {
       setFavourite(true);
-    }
+    } else setFavourite(false);
   }, [user, id]);
 
   const handleFavourite = () => {
-    toggleFavourite(id);
+    toggleFavourite({
+      name,
+      weight,
+      base_experience,
+      height,
+      abilities,
+      img,
+      id,
+    });
     setFavourite((prev) => !prev);
   };
 
@@ -82,7 +93,7 @@ const PokemonCard = ({
       className={`flex w-full max-w-72 m-3 p-2 justify-around flex-col transition-transform duration-300 transform ease-in-out hover:scale-105 border-2 rounded-md border-light-border dark:text-dark-primary dark:bg-dark-card dark:border-dark-border bg-light-card ${className}`}
       key={id}
     >
-      {(win || lose) && (
+      {onRemovePokemon && (win || lose) && (
         <Box className="absolute flex gap-2 top-0 right-0 p-1 border-b-2 border-l-2 rounded-bl-md rounded-tr-md bg-light-background dark:bg-dark-background border-light-border dark:border-dark-border">
           <Typography className="text-light-primary dark:text-dark-primary">
             W: {win}
@@ -92,39 +103,41 @@ const PokemonCard = ({
           </Typography>
         </Box>
       )}
-      <Box>
-        <Box>
-          {isCreated ? (
-            editing ? (
-              loading ? (
-                <CircularProgress />
+      <Box className="h-full ">
+        {isLoggedIn && (
+          <Box className="flex justify-between">
+            {isCreated ? (
+              editing ? (
+                loading ? (
+                  <CircularProgress />
+                ) : (
+                  <IconButton onClick={handleSubmit(handleSaveClick)}>
+                    <Save />
+                  </IconButton>
+                )
               ) : (
-                <IconButton onClick={handleSubmit(handleSaveClick)}>
-                  <Save />
+                <IconButton onClick={handleEditClick}>
+                  <Edit />
                 </IconButton>
               )
             ) : (
-              <IconButton onClick={handleEditClick}>
-                <Edit />
+              !onRemovePokemon && (
+                <IconButton onClick={handleFavourite}>
+                  {favourite ? (
+                    <Favorite sx={{ color: "#f87171" }} />
+                  ) : (
+                    <FavoriteBorder sx={{ color: "#f87171" }} />
+                  )}
+                </IconButton>
+              )
+            )}
+            {onRemovePokemon && (
+              <IconButton onClick={handleRemoveClick}>
+                <RemoveCircleOutlineIcon color="error" />
               </IconButton>
-            )
-          ) : (
-            !onRemovePokemon && (
-              <IconButton onClick={handleFavourite}>
-                {favourite ? (
-                  <Favorite sx={{ color: "#f87171" }} />
-                ) : (
-                  <FavoriteBorder sx={{ color: "#f87171" }} />
-                )}
-              </IconButton>
-            )
-          )}
-          {onRemovePokemon && (
-            <IconButton onClick={handleRemoveClick}>
-              <RemoveCircleOutlineIcon color="error" />
-            </IconButton>
-          )}
-        </Box>
+            )}
+          </Box>
+        )}
 
         <CardMedia
           component="img"
@@ -216,13 +229,18 @@ const PokemonCard = ({
           {children}
         </CardContent>
       </Box>
-      {!isCreated && (
-        <NavLink
-          className="flex items-center justify-center"
-          to={`/pokemon/${id}`}
-        >
-          <Button>Show more</Button>
-        </NavLink>
+      {abilities && isLoggedIn && (
+        <Box className="flex justify-center items-center relative">
+          <NavLink
+            className="flex items-center justify-center"
+            to={`/pokemon/${id}`}
+          >
+            <Button>Show more</Button>
+          </NavLink>
+          {onRemovePokemon && (
+            <img className="w-12 p-1 absolute right-1" src={Swords} />
+          )}
+        </Box>
       )}
     </Box>
   );

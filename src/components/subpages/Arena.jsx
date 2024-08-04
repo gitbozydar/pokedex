@@ -21,8 +21,12 @@ import CustomPagination from "../shared/CustomPagination/CustomPagination";
 import useStats from "../hooks/useStats";
 
 const Arena = () => {
-  const [firstPokemon, setFirstPokemon] = useState(null);
-  const [secondPokemon, setSecondPokemon] = useState(null);
+  const [firstPokemon, setFirstPokemon] = useState(
+    () => JSON.parse(localStorage.getItem("firstPokemon")) || null
+  );
+  const [secondPokemon, setSecondPokemon] = useState(
+    () => JSON.parse(localStorage.getItem("secondPokemon")) || null
+  );
   const [open, setOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [url, setUrl] = useState(`${POKE_URL}/pokemon?limit=20`);
@@ -45,6 +49,14 @@ const Arena = () => {
   useEffect(() => {
     fetchCreated();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("firstPokemon", JSON.stringify(firstPokemon));
+  }, [firstPokemon]);
+
+  useEffect(() => {
+    localStorage.setItem("secondPokemon", JSON.stringify(secondPokemon));
+  }, [secondPokemon]);
 
   const handlePageChange = (newUrl) => {
     setUrl(newUrl);
@@ -122,7 +134,7 @@ const Arena = () => {
   };
 
   return (
-    <Box className="flex w-3/4 h-full justify-center items-center gap-12 p-10">
+    <Box className="flex flex-col sm:flex-row h-full justify-center items-center gap-12 p-10 dark:bg-dark-background bg-light-background w-full">
       {firstPokemon ? (
         <PokemonCard
           className={firstPokemonBW ? "bw" : ""}
@@ -166,7 +178,6 @@ const Arena = () => {
           Add <CatchingPokemonTwoToneIcon />
         </Placeholder>
       )}
-
       <Dialog open={open} maxWidth="md" onClose={handleCloseDialog}>
         <DialogTitle>
           <CustomPagination {...pageInfo} onPageChange={handlePageChange}>
@@ -177,7 +188,6 @@ const Arena = () => {
             <Typography>Show created pokemons</Typography>
           </Box>
         </DialogTitle>
-
         <DialogContent>
           <PokemonList
             firstPokemon={firstPokemon}

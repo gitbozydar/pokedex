@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-
 import Layout from "./components/shared/Layout/Layout";
 
 import "./components/styles/App.css";

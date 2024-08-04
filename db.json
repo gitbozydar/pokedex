@@ -1,3 +1,56 @@
 {
-  "users": []
+  "users": [
+    {
+      "id": "dc27cab0-4974-42dd-948e-a7fd188314d3",
+      "username": "ivo2004",
+      "email": "ivo.delev04@wp.pl",
+      "password": "Fajnybenek2004$",
+      "confirmPassword": "Fajnybenek2004$",
+      "favourites": [],
+      "created": [
+        {
+          "name": "123",
+          "weight": 123,
+          "height": 123,
+          "base_experience": 123,
+          "img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/151.png",
+          "id": "b5ab8d9b-58e9-409f-9e40-f7c51209d1b7"
+        },
+        {
+          "name": "Tram",
+          "weight": 1012,
+          "height": 132,
+          "base_experience": 23,
+          "img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/153.png",
+          "id": "b171088f-9930-43f6-bae3-f77715db4d47"
+        }
+      ],
+      "stats": [
+        {
+          "id": "b5ab8d9b-58e9-409f-9e40-f7c51209d1b7",
+          "base_experience": 133,
+          "win": 1,
+          "lose": 0
+        },
+        {
+          "id": "b5ab8d9b-58e9-409f-9e40-f7c51209d1b7",
+          "base_experience": 133,
+          "win": 1,
+          "lose": 0
+        },
+        {
+          "id": 1,
+          "base_experience": 74,
+          "win": 0,
+          "lose": 3
+        },
+        {
+          "id": 2,
+          "base_experience": 162,
+          "win": 2,
+          "lose": 0
+        }
+      ]
+    }
+  ]
 }

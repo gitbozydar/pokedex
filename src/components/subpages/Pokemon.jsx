@@ -28,6 +28,7 @@ const Pokemon = () => {
   }
 
   if (!data) {
+    console.log("error");
     return null;
   }
 
@@ -44,7 +45,7 @@ const Pokemon = () => {
   } = data;
 
   return (
-    <Box className="flex justify-center p-4">
+    <Box className="flex w-fulljustify-center p-4 bg-light-background dark:bg-dark-background">
       <PokemonCardExpansion
         name={name}
         weight={weight}

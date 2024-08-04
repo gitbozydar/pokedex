@@ -44,7 +44,7 @@ const Edit = () => {
       </Button>
       {showForm && <PokemonForm />}
       {!loading ? (
-        <Box className="flex flex-wrap content-center g-2">
+        <Box className="flex w-full flex-wrap justify-center g-2">
           {!updating ? (
             pokemons.map(
               ({ name, weight, height, base_experience, img, id }, index) => (

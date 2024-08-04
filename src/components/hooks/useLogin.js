@@ -35,7 +35,7 @@ const useLogin = () => {
       setIsLoggedIn(false);
       setUsername("");
       setPassword("");
-      onLogOut && onLogOudt();
+      onLogOut && onLogOut();
     }
   };
 
